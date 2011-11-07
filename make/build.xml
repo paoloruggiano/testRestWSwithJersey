@@ -1,9 +1,9 @@
-<project name="j2se_dynamic_webproject_eclipsestyle_template"
+<project name="testRESTWSwithJersey"
          default="compile" basedir="..">
 
 
     <description>
-       j2ee dynamic web project eclipse style template
+       REST web services with jersey
     </description>
 
     <property name="make.dir" value="${basedir}/make"/>

@@ -1,9 +1,19 @@
-template-j2ee-dynamic-webproject-eclipsestyle
-=============================================
-readme(s)
-=============================================
-Template di progetto web dinamico "eclipse style"
+testRESTWSwithJersey
+====================
+readme
+======
+Progetto web dinamico "eclipse style"
 (da usarsi in IDE grafico eclipse come progetto web dinamico)
+per test REST webservices con Jersey
+
+RIF.
+----
+http://jersey.java.net/nonav/documentation/latest/user-guide.html
+
+PRE-REQUISITI
+-------------
+jdk 1.6
+jre 1.6 in runtime (Tomcat6 o equivalente appserver che supporta jre1.6)
 
 SVILUPPO
 --------
@@ -35,10 +45,7 @@ CONFIGURAZIONE
 	in local rinominandolo log4j.properties
 	ed adeguarne il contenuto
 
-4)per eclipse ID
-- copiare in root .project e .classpath e .settings
-adeguare .project
-in .settings adeguare org.eclipse.wst.common.component
+
 
 
 USO

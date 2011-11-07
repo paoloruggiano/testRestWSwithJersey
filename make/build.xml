@@ -1,0 +1,46 @@
+<project name="j2se_dynamic_webproject_eclipsestyle_template"
+         default="compile" basedir="..">
+
+
+    <description>
+       j2ee dynamic web project eclipse style template
+    </description>
+
+    <property name="make.dir" value="${basedir}/make"/>
+    <property name="make.lib.dir" value="${make.dir}/lib"/>
+
+    <!-- ======== proprieta' locali ======== -->
+
+    <!-- proprieta' locali di gestione del progetto 
+         (se necessarie)
+    -->
+    <property file="${make.dir}/local.properties" />
+    <!-- proprieta' legate alla versione della applicazione
+         (se necessarie)
+    -->
+    <property file="${make.dir}/application-version.properties"/>
+
+    <!-- ==== paths ==== -->
+    <path id="compile-libraries-extension">
+        <fileset dir="${make.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- ======== estensione ant ======== -->
+    <property name="lib.ant-contrib.dir"
+              value="${make.lib.dir}/ant-contrib"/>
+    <property name="lib.ant-contrib.jar"
+              value="${lib.ant-contrib.dir}/ant-contrib-1.0b3.jar"/>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+       <classpath>
+          <pathelement location="${lib.ant-contrib.jar}"/>
+       </classpath>
+    </taskdef>
+
+    <!-- ======== xml fragments ======== -->
+    <import file="base-build.xml"/>
+
+
+</project>

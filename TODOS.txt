@@ -1,0 +1,11 @@
+template-j2ee-dynamic-webproject-eclipsestyle
+=============================================
+lista todo(s)
+=============================================
+
+
+gestione ciclo di vita
+----------------------
+1)cartella lib per lib con scope compile/provided...
+2)log4j
+3)cartella conf per files specific appserver

@@ -1,0 +1,157 @@
+<project>
+    
+    <!-- frammento di build.xml di base -->
+
+    <!-- ==== properties ==== -->
+
+    <property name="source.dir" value="${basedir}/src/java"/>
+    <property name="conf.dir" value="${basedir}/src/conf"/>
+    <property name="webroot.dir" value="${basedir}/WebContent"/>
+    <property name="webinf.dir" value="${webroot.dir}/WEB-INF"/>
+    <property name="lib.dir" value="${webinf.dir}/lib"/>
+    <property name="compile.dir" value="${webinf.dir}/classes"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.war.dir" value="${build.dir}/war"/>
+    <property name="package.dir" value="${basedir}/package"/>
+    <property name="local.dir" value="${basedir}/local"/>
+
+    <!-- ==== paths ==== -->
+
+    <path id="libraries">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="compile-libraries">
+        <path refid="compile-libraries-extension"/>
+        <path refid="libraries"/>
+    </path>
+
+    <!-- ========  filters ======== -->
+    <filterset id="application-props-filterset">
+       <filter token="APPLICATION-NAME"
+               value="${application.name}"/>
+       <filter token="APPLICATION-VERSION"
+               value="${application.version}"/>
+    </filterset>
+
+    <!-- ==== targets ==== -->
+
+    <!-- non si cancella ${compile.dir} ma solo il contenuto -->
+    <target name="clean-compile">
+       <delete includeemptydirs="true"> 
+          <fileset dir="${compile.dir}" includes="**/*">
+             <!-- files da non cancellare -->
+             <exclude name="**/*.properties"/>
+          </fileset>
+       </delete>
+    </target>
+
+    <target name="prepare-compile" depends="clean-compile">
+       <!-- quanto necessario -->
+    </target>
+
+    <target name="compile" depends="prepare-compile">
+      <javac srcdir="${source.dir}"
+             destdir="${compile.dir}"
+             classpathref="compile-libraries"/>
+    </target>
+
+    <target name="deploy-exp" depends="compile">
+        <if>
+            <and>
+                <isset property="server.webroot.dir"/>
+            </and>
+        <then>
+            <!-- copia jsp con sostituzione token -->
+            <copy todir="${server.webroot.dir}"
+                  preservelastmodified="false"
+                  overwrite="true"
+                  includeEmptyDirs="true">
+                <fileset dir="${webroot.dir}">
+                    <include name="**/*.jsp"/>
+                </fileset>
+                <filterset refid="application-props-filterset"/>
+            </copy>
+            <!-- copia altre risorse senza sostituzione token -->
+            <copy todir="${server.webroot.dir}"
+                  preservelastmodified="false"
+                  overwrite="true"
+                  includeEmptyDirs="true">
+                <fileset dir="${webroot.dir}">
+                    <exclude name="**/*.jsp"/>
+                </fileset>
+            </copy>
+        </then>
+        <else>
+            <echo>
+                server.webroot.dir non definita : creare un file local.properties e definire tale proprieta'
+            </echo>
+            <fail>
+                server.webroot.dir non definita : creare un file local.properties e definire tale proprieta'
+            </fail>
+        </else>
+        </if>
+    </target>
+
+    <!-- build -->
+
+    <target name="clean-build">
+       <delete dir="${build.dir}"/> 
+    </target>
+    <target name="clean-build-war">
+       <delete dir="${build.war.dir}"/> 
+    </target>
+    <target name="prepare-build-war" depends="clean-build-war">
+       <mkdir dir="${build.dir}"/> 
+       <mkdir dir="${build.war.dir}"/> 
+    </target>
+
+    <target name="build-war" depends="prepare-build-war,compile">
+       <!-- copia jsp,xml,etc. con sostituzione token -->
+       <copy todir="${build.war.dir}"
+             preservelastmodified="false"
+             overwrite="true"
+             includeEmptyDirs="true">
+           <fileset dir="${webroot.dir}">
+               <include name="**/*.jsp"/>
+               <include name="**/*.xml"/>
+               <include name="**/*.properties"/>
+           </fileset>
+           <filterset refid="application-props-filterset"/>
+       </copy>
+       <!-- copia altre risorse senza sostituzione token -->
+       <copy todir="${build.war.dir}"
+             preservelastmodified="false"
+             overwrite="true"
+             includeEmptyDirs="true">
+           <fileset dir="${webroot.dir}">
+               <exclude name="**/*.jsp"/>
+               <exclude name="**/*.xml"/>
+               <exclude name="**/*.properties"/>
+           </fileset>
+       </copy>
+       <!-- copia configurazioni locali-->
+       <copy todir="${build.war.dir}/WEB-INF/classes"
+             file="${local.dir}/log4j.properties"/>
+    </target>
+
+
+    <!-- package -->
+
+    <target name="clean-package">
+       <delete dir="${package.dir}"/> 
+    </target>
+    <target name="prepare-package-war">
+       <mkdir dir="${package.dir}"/> 
+       <delete file="${package.dir}/${application.name}.war"/> 
+    </target>
+    <target name="package-war" depends="build-war,prepare-package-war">
+       <jar destfile="${package.dir}/${application.name}.war"
+            basedir="${build.war.dir}"/>
+    </target>
+
+    <target name="clean-all" depends="clean-compile,clean-build,clean-package"/>
+
+</project>

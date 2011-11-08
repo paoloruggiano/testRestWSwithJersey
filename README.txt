@@ -26,6 +26,7 @@ le seguenti cartelle
 	bin
 	build
 	package
+        WebContent/WEB-INF/classes
 i seguenti files
 	make/local.properties
 	make/application-version.properties

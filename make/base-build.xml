@@ -65,7 +65,7 @@
             </and>
         <then>
             <!-- copia jsp con sostituzione token -->
-            <copy todir="${server.webroot.dir}"
+            <copy todir="${server.webroot.dir}/${application.name}"
                   preservelastmodified="false"
                   overwrite="true"
                   includeEmptyDirs="true">
@@ -75,7 +75,7 @@
                 <filterset refid="application-props-filterset"/>
             </copy>
             <!-- copia altre risorse senza sostituzione token -->
-            <copy todir="${server.webroot.dir}"
+            <copy todir="${server.webroot.dir}/${application.name}"
                   preservelastmodified="false"
                   overwrite="true"
                   includeEmptyDirs="true">

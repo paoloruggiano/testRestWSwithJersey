@@ -1,3 +1,4 @@
 bin
 build
 package
+WebContent/WEB-INF/classes
